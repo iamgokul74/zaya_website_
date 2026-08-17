@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
-:root {
+:root,
+html.dark {
   --bg-primary: #050507;
   --bg-surface: #0B0C10;
   --bg-elevated: #111318;
@@ -9,10 +10,27 @@
   --text-muted: #8B919E;
   --accent-primary: #B8FF3D;
   --accent-secondary: #63E6FF;
+  --pattern-line: rgba(255, 255, 255, 0.025);
+  --radial-glow-lime: rgba(184, 255, 61, 0.04);
+  --radial-glow-cyan: rgba(99, 230, 255, 0.03);
 
   --font-sans: var(--font-inter), system-ui, sans-serif;
   --font-display: var(--font-space-grotesk), system-ui, sans-serif;
   --font-mono: var(--font-jetbrains-mono), monospace;
+}
+
+html.light {
+  --bg-primary: #F5F7F2;
+  --bg-surface: #FFFFFF;
+  --bg-elevated: #EEF1EA;
+  --border-subtle: #D9DED5;
+  --text-primary: #10130F;
+  --text-muted: #626A5F;
+  --accent-primary: #8CCF20;
+  --accent-secondary: #009DB5;
+  --pattern-line: rgba(16, 19, 15, 0.05);
+  --radial-glow-lime: rgba(140, 207, 32, 0.06);
+  --radial-glow-cyan: rgba(0, 157, 181, 0.05);
 }
 
 @theme {
@@ -40,18 +58,29 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Theme Smooth Transitions */
+body, header, nav, section, footer, div, input, select, button, a {
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body, header, nav, section, footer, div, input, select, button, a {
+    transition: none !important;
+  }
+}
+
 /* Subtle Technical Grid Overlay */
 .bg-grid-pattern {
   background-size: 40px 40px;
   background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+    linear-gradient(to right, var(--pattern-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--pattern-line) 1px, transparent 1px);
 }
 
 .bg-radial-vignette {
   background: 
-    radial-gradient(circle at 50% 10%, rgba(184, 255, 61, 0.04) 0%, transparent 60%),
-    radial-gradient(circle at 80% 80%, rgba(99, 230, 255, 0.03) 0%, transparent 50%);
+    radial-gradient(circle at 50% 10%, var(--radial-glow-lime) 0%, transparent 60%),
+    radial-gradient(circle at 80% 80%, var(--radial-glow-cyan) 0%, transparent 50%);
 }
 
 /* Accessibility Focus Ring Styling */

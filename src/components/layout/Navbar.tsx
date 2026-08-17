@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowRight, Shield } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
@@ -97,8 +98,10 @@ export function Navbar() {
           ))}
         </nav>
 
-        {/* Desktop Primary Action */}
+        {/* Desktop Action & Theme Switcher */}
         <div className="hidden lg:flex items-center gap-3">
+          <ThemeToggle />
+
           <Button
             href="/register"
             variant="primary"
@@ -109,16 +112,20 @@ export function Navbar() {
           </Button>
         </div>
 
-        {/* Mobile Menu Toggle Button */}
-        <button
-          type="button"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          aria-expanded={mobileMenuOpen}
-          aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
-          className="lg:hidden flex h-10 w-10 items-center justify-center rounded-lg border border-signal-border bg-signal-surface text-signal-text hover:border-signal-lime hover:text-signal-lime transition-colors focus-visible:outline-2 focus-visible:outline-signal-lime cursor-pointer"
-        >
-          {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
+        {/* Mobile Actions & Menu Toggle Button */}
+        <div className="flex items-center gap-2 lg:hidden">
+          <ThemeToggle />
+
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-expanded={mobileMenuOpen}
+            aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+            className="flex h-10 w-10 items-center justify-center rounded-lg border border-signal-border bg-signal-surface text-signal-text hover:border-signal-lime hover:text-signal-lime transition-colors focus-visible:outline-2 focus-visible:outline-signal-lime cursor-pointer"
+          >
+            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </Container>
 
       {/* Mobile Navigation Overlay */}
@@ -166,8 +173,9 @@ export function Navbar() {
                 REGISTER NOW
               </Button>
 
-              <div className="text-center font-mono text-[10px] text-signal-muted uppercase tracking-widest">
-                ZAYATHON &apos;26 // ZAYA CODE HUB
+              <div className="flex items-center justify-between font-mono text-[10px] text-signal-muted uppercase tracking-widest pt-2">
+                <span>ZAYATHON &apos;26 // SIGNAL</span>
+                <ThemeToggle showText />
               </div>
             </div>
           </motion.div>

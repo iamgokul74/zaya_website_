@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { Footer } from "@/components/layout/Footer";
 
 const spaceGrotesk = Space_Grotesk({
@@ -24,7 +25,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const viewport: Viewport = {
   themeColor: "#050507",
-  colorScheme: "dark",
+  colorScheme: "dark light",
   width: "device-width",
   initialScale: 1,
 };
@@ -78,20 +79,46 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} dark scroll-smooth`}
+      suppressHydrationWarning
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var saved = localStorage.getItem('zayathon_theme');
+                  var supportSystem = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+                  if (saved === 'light' || (!saved && supportSystem)) {
+                    document.documentElement.classList.remove('dark');
+                    document.documentElement.classList.add('light');
+                    document.documentElement.setAttribute('data-theme', 'light');
+                  } else {
+                    document.documentElement.classList.remove('light');
+                    document.documentElement.classList.add('dark');
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
       <body className="bg-signal-bg text-signal-text font-sans antialiased min-h-screen selection:bg-signal-lime selection:text-signal-bg relative">
-        <SmoothScrollProvider>
-          {/* Subtle Global Ambient Background Grid */}
-          <div
-            aria-hidden="true"
-            className="fixed inset-0 bg-grid-pattern opacity-[0.03] pointer-events-none z-0"
-          />
+        <ThemeProvider>
+          <SmoothScrollProvider>
+            {/* Subtle Global Ambient Background Grid */}
+            <div
+              aria-hidden="true"
+              className="fixed inset-0 bg-grid-pattern opacity-[0.03] pointer-events-none z-0"
+            />
 
-          <div className="relative z-10 flex flex-col min-h-screen">
-            {children}
-            <Footer />
-          </div>
-        </SmoothScrollProvider>
+            <div className="relative z-10 flex flex-col min-h-screen">
+              {children}
+              <Footer />
+            </div>
+          </SmoothScrollProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
